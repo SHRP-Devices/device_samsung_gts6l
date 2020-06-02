@@ -23,7 +23,7 @@
 # *not* include it on all devices, so it is safe even with hardware-specific
 # components.
 
-DEVICE_PATH := device/samsung/gts6lwifi
+DEVICE_PATH := device/samsung/gts6l
 
 # Architecture
 TARGET_ARCH := arm64
@@ -48,35 +48,34 @@ ALLOW_MISSING_DEPENDENCIES := true
 TARGET_BOOTLOADER_BOARD_NAME := msmnile
 TARGET_NO_BOOTLOADER := true
 
-# File systems
+# Filesystem
+BOARD_HAS_LARGE_FILESYSTEM := true
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
+BOARD_HAS_NO_REAL_SDCARD := true
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 
 # Kernel
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image-dtb
-BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/recovery_dtbo
 BOARD_INCLUDE_RECOVERY_DTBO := true
+BOARD_CUSTOM_BOOTIMG_MK := hardware/samsung/mkbootimg.mk
 BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x02000000 --tags_offset 0x01e00000 --header_version 1 --board SRPSD11A001
 BOARD_KERNEL_CMDLINE := console=null androidboot.hardware=qcom androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=2048 firmware_class.path=/vendor/firmware androidboot.usbcontroller=a600000.dwc3
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_TAGS_OFFSET := 0x01e00000
 BOARD_RAMDISK_OFFSET := 0x02000000
+TARGET_PREBUILT_KERNEL := device/samsung/gts6l/prebuilt/Image-dtb
+BOARD_KERNEL_SEPARATED_DTBO := true
+TARGET_KERNEL_ARCH := arm64
+TARGET_KERNEL_HEADER_ARCH := arm64
+TARGET_KERNEL_APPEND_DTB := true
+TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
 
 # Platform
 BOARD_USES_QCOM_HARDWARE := true
 TARGET_BOARD_PLATFORM := msmnile
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno640
 QCOM_BOARD_PLATFORMS += msmnile
-
-# Recovery
-TARGET_OTA_ASSERT_DEVICE := gts6lwifi
-BOARD_HAS_LARGE_FILESYSTEM := true
-BOARD_HAS_NO_SELECT_BUTTON := true
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/etc/recovery.fstab
-TARGET_COPY_OUT_VENDOR := vendor
-PLATFORM_VERSION := 10
-PLATFORM_SECURITY_PATCH := 2020-03-01
 
 # System as root
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
@@ -86,20 +85,20 @@ BOARD_SUPPRESS_SECURE_ERASE := true
 BOARD_AVB_ENABLE := false
 BOARD_BUILD_DISABLED_VBMETAIMAGE := true
 
-# Portrait orientation:
-#
-#TW_THEME := portrait_hdpi
-#TW_ROTATION := 270
+#Ignore Missing Dependencies
+ALLOW_MISSING_DEPENDENCIES=true
 
-# Landscape orientation:
-#
+# TWRP specific build flags
+TARGET_OTA_ASSERT_DEVICE := gts6lwifi
+BOARD_HAS_LARGE_FILESYSTEM := true
+BOARD_HAS_NO_SELECT_BUTTON := true
+BOARD_PREBUILT_DTBOIMAGE := device/samsung/gts6l/prebuilt/dtbo
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/etc/recovery.fstab
+TARGET_COPY_OUT_VENDOR := vendor
+RECOVERY_VARIANT := twrp
 TW_THEME := landscape_hdpi
 RECOVERY_TOUCHSCREEN_SWAP_XY := true
 RECOVERY_TOUCHSCREEN_FLIP_Y := true
-
-# TWRP
-RECOVERY_VARIANT := twrp
-TW_USE_TOOLBOX := true
 RECOVERY_SDCARD_ON_DATA := true
 TARGET_RECOVERY_QCOM_RTC_FIX := true
 TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
@@ -110,8 +109,36 @@ TW_NO_REBOOT_BOOTLOADER := true
 TW_HAS_DOWNLOAD_MODE := true
 TW_INCLUDE_NTFS_3G := true
 TW_EXCLUDE_SUPERSU := true
-TW_USE_NEW_MINADBD := true
 TW_EXTRA_LANGUAGES := true
-TW_INPUT_BLACKLIST := "hbtp_vm"
+TW_USE_NEW_MINADBD := true
+TW_USE_TOOLBOX := true
 TW_EXCLUDE_TWRPAPP := true
+TW_INPUT_BLACKLIST := "hbtp_vm"
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file"
 TW_EXCLUDE_DEFAULT_USB_INIT := true
+PLATFORM_VERSION := 10
+PLATFORM_SECURITY_PATCH := 2020-03-01
+TW_DEVICE_VERSION := 13
+
+#SHRP_Variables
+BUILD_SHRP_REC := true
+SHRP_PATH := device/samsung/gts6l
+SHRP_MAINTAINER := abun880007
+SHRP_DEVICE_CODE := gts6l
+SHRP_EDL_MODE := 1
+SHRP_EXTERNAL := /external_sd
+SHRP_INTERNAL := /sdcard
+SHRP_OTG := /usb_otg
+SHRP_FLASH := 0
+SHRP_REC := /dev/block/platform/soc/1d84000.ufshc/by-name/recovery
+SHRP_AB := false
+SHRP_REC_TYPE := SAR
+SHRP_DEVICE_TYPE := A_Only
+SHRP_EXPRESS := true
+SHRP_DARK:= true
+SHRP_STATUSBAR_RIGHT_PADDING := 40
+SHRP_STATUSBAR_LEFT_PADDING := 40
+
+# LZMA Compression
+LZMA_COMPRESSION := -9
+LZMA_RAMDISK_TARGETS := recovery
