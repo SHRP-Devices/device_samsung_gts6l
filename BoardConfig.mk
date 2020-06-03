@@ -56,20 +56,15 @@ BOARD_HAS_NO_REAL_SDCARD := true
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 
 # Kernel
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image-dtb
+BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/recovery_dtbo
 BOARD_INCLUDE_RECOVERY_DTBO := true
-BOARD_CUSTOM_BOOTIMG_MK := hardware/samsung/mkbootimg.mk
 BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x02000000 --tags_offset 0x01e00000 --header_version 1 --board SRPSD11A001
 BOARD_KERNEL_CMDLINE := console=null androidboot.hardware=qcom androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=2048 firmware_class.path=/vendor/firmware androidboot.usbcontroller=a600000.dwc3
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_TAGS_OFFSET := 0x01e00000
 BOARD_RAMDISK_OFFSET := 0x02000000
-TARGET_PREBUILT_KERNEL := device/samsung/gts6l/prebuilt/Image-dtb
-BOARD_KERNEL_SEPARATED_DTBO := true
-TARGET_KERNEL_ARCH := arm64
-TARGET_KERNEL_HEADER_ARCH := arm64
-TARGET_KERNEL_APPEND_DTB := true
-TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
 
 # Platform
 BOARD_USES_QCOM_HARDWARE := true
@@ -89,10 +84,9 @@ BOARD_BUILD_DISABLED_VBMETAIMAGE := true
 ALLOW_MISSING_DEPENDENCIES=true
 
 # TWRP specific build flags
-TARGET_OTA_ASSERT_DEVICE := gts6lwifi
+TARGET_OTA_ASSERT_DEVICE := gts6l
 BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_HAS_NO_SELECT_BUTTON := true
-BOARD_PREBUILT_DTBOIMAGE := device/samsung/gts6l/prebuilt/dtbo
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/etc/recovery.fstab
 TARGET_COPY_OUT_VENDOR := vendor
 RECOVERY_VARIANT := twrp
@@ -114,7 +108,6 @@ TW_USE_NEW_MINADBD := true
 TW_USE_TOOLBOX := true
 TW_EXCLUDE_TWRPAPP := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
-TARGET_USE_CUSTOM_LUN_FILE_PATH := "/config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file"
 TW_EXCLUDE_DEFAULT_USB_INIT := true
 PLATFORM_VERSION := 10
 PLATFORM_SECURITY_PATCH := 2020-03-01
